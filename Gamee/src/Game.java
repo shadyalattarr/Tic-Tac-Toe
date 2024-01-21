@@ -3,13 +3,18 @@ import static java.lang.Math.abs;
 import javax.swing.JOptionPane;
 
 public class Game {
-    private Turn[][] board;
+    private Turn[][] board= {
+                            {null,null,null},
+                            {null,null,null},
+                            {null,null,null}
+                            };
+    private Boolean winner=false;
     public Game()
     {
-        Turn[][] board=initialize();
+        //Turn[][] board=initialize();
     }
 
-    public Turn[][] initialize()
+    /*public Turn[][] initialize() //I dont know why it doesnt update in variable after its called in constructor so just left it like this
     {
         Turn[][] board= {
                         {null,null,null},
@@ -17,7 +22,7 @@ public class Game {
                         {null,null,null}
                         };
         return board;
-    }
+    }*/
 
     public Boolean isValid(int row, int col)
     {
@@ -27,29 +32,34 @@ public class Game {
             return true;
     }
 
-    public Turn makeMove(int row, int col, Turn turn)
+    public Turn[][] makeMove(int row, int col, Turn turn)
     {
         if(isValid(row, col))
         {
             board[row][col]= turn;
             if(winningMove(row, col))
                 {
-                    if(turn.getValue()==1) 
+                    if(turn.getValue()==1){ 
                         System.out.println("X WINS!");
-                    else
+                        winner=true;
+                    }
+                    else{
                         System.out.println("O WINS!");
+                        winner=true;
+                    }
                 }
-            if(turn==turn.O){
-                return turn.X;            
-            }
-            else
-                return turn.O;
+            return board;
         }else
         {
             JOptionPane.showMessageDialog(null, "Square is used ");
-            return turn;
+            return null;
         }
         
+    }
+
+    public Boolean getWinner()
+    {
+        return winner;
     }
 
     private Boolean winningMove(int row, int col)
@@ -100,5 +110,13 @@ public class Game {
                 if(board[row][col]==board[0][2] && board[row][col]==board[1][1] && board[row][col]==board[2][0])                    return true;
                 return false;
             }
+        }
+
+        public Turn switchTurn(Turn turn)
+        {
+            if(turn==turn.O)
+                return Turn.X;
+            else
+                return turn.O;
         }
 }
