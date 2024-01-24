@@ -15,17 +15,21 @@ import javax.swing.JPanel;
 
 import StatePattern.OState;
 import StatePattern.XState;
+import java.util.Stack;
 
-public class Board extends javax.swing.JFrame {
+
+public class BoardGUI extends javax.swing.JFrame {
     //frontend of board
 
     private JPanel gameBoard;
     private JPanel[][] squares = new JPanel[3][3];
     private JPanel square;
-    private Turn turn = Turn.X;
     Game game = new Game();
 
-    public Board() {
+    private Stack<Memento> mementoStack = new Stack<>();
+
+
+    public BoardGUI() {
         initialize();
         checkMoves();
     }
@@ -52,6 +56,9 @@ public class Board extends javax.swing.JFrame {
         undo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                undoMove();
+                
+                updateGUI(game.getBoard());
                 System.out.println("undo and notify");
                 // memento here + observer( observer is board and subject is validatemoves)
             }
@@ -78,8 +85,13 @@ public class Board extends javax.swing.JFrame {
                 row = e.getY() / 100;
                 col = e.getX() / 100;
 
+                Memento currentMemento = game.createMemento();//can make this a separate method
+                mementoStack.push(currentMemento);
+
+
                 game.makemove(row, col);
-    
+
+
                 updateGUI(game.getBoard());
 
                 if(game.getWinner())
@@ -92,15 +104,27 @@ public class Board extends javax.swing.JFrame {
         });
     }
 
+    public void undoMove() {
+        
+        if (!mementoStack.isEmpty()) {           
+            Memento previousMemento = mementoStack.pop();
+            game.restore(previousMemento);           
+        }else{
+            JOptionPane.showMessageDialog(null, "No more Undos");
+        }
+    }
+
     private void updateGUI(Square[][] board) {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (board[row][col].getSquareState() instanceof XState) {
                     squares[row][col].setBackground(Color.RED);
-                    continue;
+
                 } else if (board[row][col].getSquareState() instanceof OState) {
                     squares[row][col].setBackground(Color.GREEN);
-                    continue;
+
+                }else {                    
+                    squares[row][col].setBackground(Color.CYAN);
                 }
             }
         }
@@ -115,20 +139,20 @@ public class Board extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Board.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         // </editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Board().setVisible(true);
+                new BoardGUI().setVisible(true);
             }
         });
     }

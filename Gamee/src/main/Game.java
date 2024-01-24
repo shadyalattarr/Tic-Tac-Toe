@@ -2,14 +2,14 @@ package main;
 import static java.lang.Math.abs;
 
 import javax.swing.JOptionPane;
-
 import StatePattern.EmptyState;
 
 public class Game {
     
     private Square[][] boardSquare;
-    Turn currentTurn;
+    private Turn currentTurn;
     private Boolean winner=false;
+
 
     public Game()
     {   
@@ -17,6 +17,26 @@ public class Game {
         currentTurn = Turn.X;
         initializeBoard();
         //Turn[][] board=initialize();
+    }
+
+    public Memento createMemento() {
+        return new Memento(initializeBoard(this.boardSquare), currentTurn, winner);
+    }
+
+    public void restore(Memento memento) {
+        this.boardSquare = memento.getBoardSquare();
+        this.currentTurn = memento.getCurrentTurn();
+        this.winner = memento.getWinner();
+    }
+
+    public Square[][] initializeBoard(Square board[][]) {
+        Square[][] clone = new Square[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                clone[i][j] = new Square(i,j,board[i][j].getSquareState());
+            }
+        }
+        return clone;
     }
 
     public void initializeBoard()
