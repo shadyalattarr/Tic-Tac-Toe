@@ -1,5 +1,7 @@
 package main;
 
+import javax.swing.JButton;
+
 public class Start extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -21,6 +23,10 @@ public class Start extends javax.swing.JFrame {
 
         jButton2.setText("Two Player");
 
+        
+
+        
+        
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -59,8 +65,21 @@ public class Start extends javax.swing.JFrame {
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
+        jButton1.addActionListener(e -> {
+            BoardGUI bg = new BoardGUI(new SinglePlayerStrategy());
+            
+        });
+        
+        jButton2.addActionListener(e -> {
+            BoardGUI bg = new BoardGUI(new TwoPlayerStrategy());
+            
+        });
+
         pack();
-    }             
+    }
+    
+    
+
 
     public static void main(String args[]) {
        

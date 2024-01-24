@@ -2,5 +2,6 @@ package main;
 
 public interface StartGameStrategy {
 
-    public void startGame();
+   
+    public void makeMove(int row,int col,Game game);
 }

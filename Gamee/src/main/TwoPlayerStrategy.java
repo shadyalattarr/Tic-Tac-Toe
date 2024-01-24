@@ -2,9 +2,11 @@ package main;
 
 public class TwoPlayerStrategy implements StartGameStrategy {
 
+    
+    
     @Override
-    public void startGame() {
-        BoardGUI board = new BoardGUI();
+    public void makeMove(int row, int col,Game game) {
+        game.makemove(row, col);
     }
 
 }

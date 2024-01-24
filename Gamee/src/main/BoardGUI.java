@@ -21,18 +21,30 @@ import java.util.Stack;
 
 public class BoardGUI extends javax.swing.JFrame {
     //frontend of board
-
+    StartGameStrategy numPlayers;
     private JPanel gameBoard;
     private JPanel[][] squares = new JPanel[3][3];
     private JPanel square;
-    Game game = new Game();
+    private Game game = new Game();
+
+    public Game getGame() {
+        return game;
+    }
+
 
     private Stack<Memento> mementoStack = new Stack<>();
 
+    public void setNumPs(StartGameStrategy numPlayers)
+    {
+        this.numPlayers = numPlayers;
+    }
 
-    public BoardGUI() {
+    //getter?
+    public BoardGUI(StartGameStrategy numps) {
+        setNumPs(numps);
         initialize();
-        checkMoves();
+        //checkMoves();
+        this.setVisible(true);
     }
     
     private void initialize() {
@@ -70,18 +82,6 @@ public class BoardGUI extends javax.swing.JFrame {
             }
         });
 
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(gameBoard, BorderLayout.CENTER);
-        getContentPane().add(buttonPanel, BorderLayout.EAST);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
-        setLocationRelativeTo(null);
-    }
-
-    // instead of getbackground, when we have an image or drawing, we'll add it to
-    // frame
-    // and use getcomponentcount
-    private void checkMoves() {
         gameBoard.addMouseListener(new MouseAdapter() {
             int row, col;           
 
@@ -93,8 +93,8 @@ public class BoardGUI extends javax.swing.JFrame {
                 Memento currentMemento = game.createMemento();//can make this a separate method
                 mementoStack.push(currentMemento);
 
-
-                game.makemove(row, col);
+                numPlayers.makeMove(row,col,game);
+                
 
 
                 try {
@@ -112,7 +112,22 @@ public class BoardGUI extends javax.swing.JFrame {
 
             }
         });
+
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(gameBoard, BorderLayout.CENTER);
+        getContentPane().add(buttonPanel, BorderLayout.EAST);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
+        setLocationRelativeTo(null);
     }
+
+    // instead of getbackground, when we have an image or drawing, we'll add it to
+    // frame
+    // and use getcomponentcount
+    // private void checkMoves() {
+
+    // }
+    
 
     public void undoMove() {
         
@@ -151,30 +166,30 @@ public class BoardGUI extends javax.swing.JFrame {
     }
     
 
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        // </editor-fold>
+    //public void play() {
+    //     try {
+    //         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+    //             if ("Nimbus".equals(info.getName())) {
+    //                 javax.swing.UIManager.setLookAndFeel(info.getClassName());
+    //                 break;
+    //             }
+    //         }
+    //     } catch (ClassNotFoundException ex) {
+    //         java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    //     } catch (InstantiationException ex) {
+    //         java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    //     } catch (IllegalAccessException ex) {
+    //         java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    //     } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+    //         java.util.logging.Logger.getLogger(BoardGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+    //     }
+    //     // </editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BoardGUI().setVisible(true);
-            }
-        });
-    }
+    //     /* Create and display the form */
+    //     java.awt.EventQueue.invokeLater(new Runnable() {
+    //         public void run() {
+    //             new BoardGUI().setVisible(true);
+    //         }
+    //     });
+    // }
 }
