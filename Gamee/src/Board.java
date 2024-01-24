@@ -13,10 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Board extends javax.swing.JFrame {
-    public Board() {
-        initialize();
-        checkMoves();
-    }
+    //frontend of board
 
     private JPanel gameBoard;
     private JPanel[][] squares = new JPanel[3][3];
@@ -24,6 +21,11 @@ public class Board extends javax.swing.JFrame {
     private Turn turn = Turn.X;
     Game game = new Game();
 
+    public Board() {
+        initialize();
+        checkMoves();
+    }
+    
     private void initialize() {
         JPanel buttonPanel = new JPanel();
         JButton undo = new JButton("Undo");
@@ -65,21 +67,24 @@ public class Board extends javax.swing.JFrame {
     private void checkMoves() {
         gameBoard.addMouseListener(new MouseAdapter() {
             int row, col;
-            Turn[][] board;
+            boolean moveSuccessful;
 
             @Override
             public void mouseClicked(MouseEvent e) {
                 row = e.getY() / 100;
                 col = e.getX() / 100;
-                board = game.makeMove(row, col, turn);
+
+                moveSuccessful = game.makeMove(row, col, turn);
+
+                if (moveSuccessful) {
+                    turn = game.switchTurn(turn);
+                    updateGUI(game.getBoard());
+                }
+
                 if(game.getWinner())
                 {
                     JOptionPane.showMessageDialog(null, "We have a winner! ");
                     setVisible(false);
-                }
-                if (board != null) {
-                    turn = game.switchTurn(turn);
-                    updateGUI(board);
                 }
 
             }

@@ -9,6 +9,7 @@ public class Game {
                             {null,null,null}
                             };
     private Boolean winner=false;
+
     public Game()
     {
         //Turn[][] board=initialize();
@@ -32,14 +33,15 @@ public class Game {
             return true;
     }
 
-    public Turn[][] makeMove(int row, int col, Turn turn)
+    public boolean makeMove(int row, int col, Turn turn)
     {
+        boolean success;
         if(isValid(row, col))
         {
             board[row][col]= turn;
             if(winningMove(row, col))
                 {
-                    if(turn.getValue()==1){ 
+                    if(turn == Turn.X){ 
                         System.out.println("X WINS!");
                         winner=true;
                     }
@@ -48,12 +50,14 @@ public class Game {
                         winner=true;
                     }
                 }
-            return board;
+            success = true;
         }else
         {
             JOptionPane.showMessageDialog(null, "Square is used ");
-            return null;
+            success = false;
         }
+
+        return success;
         
     }
 
@@ -119,4 +123,11 @@ public class Game {
             else
                 return turn.O;
         }
+    
+    public Turn[][] getBoard()
+    {
+        return board;
+    }
+    
 }
+
