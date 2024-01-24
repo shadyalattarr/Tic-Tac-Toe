@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -58,7 +59,12 @@ public class BoardGUI extends javax.swing.JFrame {
             public void actionPerformed(ActionEvent e) {
                 undoMove();
                 
-                updateGUI(game.getBoard());
+                try {
+                    updateGUI(game.getBoard());
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 System.out.println("undo and notify");
                 // memento here + observer( observer is board and subject is validatemoves)
             }
@@ -77,8 +83,7 @@ public class BoardGUI extends javax.swing.JFrame {
     // and use getcomponentcount
     private void checkMoves() {
         gameBoard.addMouseListener(new MouseAdapter() {
-            int row, col;
-            boolean moveSuccessful;
+            int row, col;           
 
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -92,7 +97,12 @@ public class BoardGUI extends javax.swing.JFrame {
                 game.makemove(row, col);
 
 
-                updateGUI(game.getBoard());
+                try {
+                    updateGUI(game.getBoard());
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
 
                 if(game.getWinner())
                 {
@@ -114,21 +124,32 @@ public class BoardGUI extends javax.swing.JFrame {
         }
     }
 
-    private void updateGUI(Square[][] board) {
+      
+
+    private void updateGUI(Square[][] board) throws IOException {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
+               
+                squares[row][col].removeAll();
+                
                 if (board[row][col].getSquareState() instanceof XState) {
                     squares[row][col].setBackground(Color.RED);
-
+                    Shape y = FlyWeightFactory.getShape("X");
+                    y.draw(squares[row][col]);
                 } else if (board[row][col].getSquareState() instanceof OState) {
                     squares[row][col].setBackground(Color.GREEN);
-
-                }else {                    
+                    Shape y = FlyWeightFactory.getShape("O");
+                    y.draw(squares[row][col]);
+                } else {
                     squares[row][col].setBackground(Color.CYAN);
                 }
+                
+                squares[row][col].revalidate();
+                squares[row][col].repaint();
             }
         }
     }
+    
 
     public static void main(String args[]) {
         try {

@@ -1,7 +1,6 @@
 package main;
 import static java.lang.Math.abs;
 
-import javax.swing.JOptionPane;
 import StatePattern.EmptyState;
 
 public class Game {
