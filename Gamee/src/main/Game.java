@@ -51,8 +51,8 @@ public class Game {
                 else{
                      System.out.println("O WINS!");
                      winner=true;
-                 }
-             }
+                }
+            }
     }
     
     // public boolean makeMove(int row, int col, Turn turn)
