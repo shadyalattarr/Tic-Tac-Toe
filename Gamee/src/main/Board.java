@@ -1,3 +1,4 @@
+package main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,6 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import StatePattern.OState;
+import StatePattern.XState;
 
 public class Board extends javax.swing.JFrame {
     //frontend of board
@@ -74,12 +78,9 @@ public class Board extends javax.swing.JFrame {
                 row = e.getY() / 100;
                 col = e.getX() / 100;
 
-                moveSuccessful = game.makeMove(row, col, turn);
-
-                if (moveSuccessful) {
-                    turn = game.switchTurn(turn);
-                    updateGUI(game.getBoard());
-                }
+                game.makemove(row, col);
+    
+                updateGUI(game.getBoard());
 
                 if(game.getWinner())
                 {
@@ -91,13 +92,13 @@ public class Board extends javax.swing.JFrame {
         });
     }
 
-    private void updateGUI(Turn[][] board) {
+    private void updateGUI(Square[][] board) {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
-                if (board[row][col] == Turn.X) {
+                if (board[row][col].getSquareState() instanceof XState) {
                     squares[row][col].setBackground(Color.RED);
                     continue;
-                } else if (board[row][col] == Turn.O) {
+                } else if (board[row][col].getSquareState() instanceof OState) {
                     squares[row][col].setBackground(Color.GREEN);
                     continue;
                 }
