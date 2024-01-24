@@ -108,7 +108,7 @@ public class Game {
         return winner;
     }
 
-    private Boolean winningMove(int row, int col)
+    public Boolean winningMove(int row, int col)
         {
             if(abs(row-col)==2 || row==col)// one of the corners + middle
                 if(checkDiagonal(row,col))
