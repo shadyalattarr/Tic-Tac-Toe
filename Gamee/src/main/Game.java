@@ -58,9 +58,23 @@ public class Game {
     //         return true;
     // }
 
+    public boolean isEmptySq()
+    {
+        for(int i = 0;i<3;i++)
+        {
+            for(int j =0;j<3;j++)
+            {
+                if(boardSquare[i][j].getSquareState() instanceof EmptyState)
+                    return true;
+            }
+        }
+        return false;
+    }
+
     public void makemove(int row,int col)
     {
-        boardSquare[row][col].makeMove(currentTurn,this); 
+        if(isEmptySq())
+            boardSquare[row][col].makeMove(currentTurn,this); 
         if(winningMove(row, col))
             {
                 if(currentTurn != Turn.X){//cuz we switch in EmptyState 
@@ -71,6 +85,10 @@ public class Game {
                      System.out.println("O WINS!");
                      winner=true;
                 }
+            }
+            if(!isEmptySq())
+            {
+                System.out.println("draw");
             }
     }
     

@@ -19,7 +19,11 @@ public class DefensiveDifficulty implements DifficultyStrategy {
                 {
                     board[row][col].changeState(new XState());
                     if(game.winningMove(row,col))
+                    {
+                        board[row][col].changeState(new EmptyState());
                         return (row*3) + col;
+                    }
+                    board[row][col].changeState(new EmptyState());
                 }
             }
         }

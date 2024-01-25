@@ -1,5 +1,7 @@
 package main;
 
+import StatePattern.EmptyState;
+
 public class RandomDifficulty implements DifficultyStrategy {
 
     @Override
@@ -9,12 +11,11 @@ public class RandomDifficulty implements DifficultyStrategy {
         
         Boolean flag = false;
         while (!flag) {
-            randomNum = (int) Math.random() * range;
+            randomNum = (int) (Math.random() * range);
             temp = game.getBoard();
             row = randomNum / 3;
             col = randomNum % 3;
-
-            if (temp[row][col].getSquareState() == null) 
+            if (temp[row][col].getSquareState() instanceof EmptyState) 
                 flag=true;
         }
         return randomNum;

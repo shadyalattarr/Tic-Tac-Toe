@@ -1,6 +1,7 @@
 package main;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 public class Start extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
@@ -10,7 +11,7 @@ public class Start extends javax.swing.JFrame {
     public Start() {
         initComponents();
     }
-
+ 
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
@@ -66,7 +67,18 @@ public class Start extends javax.swing.JFrame {
         );
 
         jButton1.addActionListener(e -> {
-            BoardGUI bg = new BoardGUI(new SinglePlayerStrategy());
+             String[] diff = {"Easy", "Hard"};
+                    int difficulty = JOptionPane.showOptionDialog(null,
+                            "Choose a Difficulty:",
+                            "Single Player Difficulty",
+                            JOptionPane.DEFAULT_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE,
+                            null,
+                            diff,
+                            diff[0]);
+            DifficultyStrategy chosenDiff = difficulty == 0 ? new RandomDifficulty() : difficulty == 1 ? new DefensiveDifficulty() : null ;   
+            BoardGUI bg = new BoardGUI(new SinglePlayerStrategy(chosenDiff));
+
             
         });
         

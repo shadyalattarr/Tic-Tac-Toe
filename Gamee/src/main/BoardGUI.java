@@ -77,7 +77,7 @@ public class BoardGUI extends javax.swing.JFrame {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
-                System.out.println("undo and notify");
+                
                 // memento here + observer( observer is board and subject is validatemoves)
             }
         });
@@ -95,7 +95,7 @@ public class BoardGUI extends javax.swing.JFrame {
 
                 numPlayers.makeMove(row,col,game);
                 
-
+                
 
                 try {
                     updateGUI(game.getBoard());
