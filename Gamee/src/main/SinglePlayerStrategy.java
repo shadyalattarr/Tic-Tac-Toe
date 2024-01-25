@@ -1,5 +1,7 @@
 package main;
 
+import StatePattern.EmptyState;
+
 public class SinglePlayerStrategy implements StartGameStrategy {
 
     DifficultyStrategy difficulty;
@@ -10,13 +12,17 @@ public class SinglePlayerStrategy implements StartGameStrategy {
 
     @Override
     public void makeMove(int row, int col, Game game) {
+        boolean temp=game.getBoard()[row][col].getSquareState() instanceof EmptyState;
 
         game.makemove(row, col);// human
 
-        // generate computer position
-        if (game.isEmptySq()) {
-            int newposition = difficulty.returnPosition(game);
-            game.makemove(newposition / 3, newposition % 3);
+        if (temp) {
+
+            // generate computer position
+            if (game.isEmptySq() && game.getWinner() == false) {
+                int newposition = difficulty.returnPosition(game);
+                game.makemove(newposition / 3, newposition % 3);
+            }
         }
     }
 }

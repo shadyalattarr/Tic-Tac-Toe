@@ -8,7 +8,12 @@ public class Game {
     private Square[][] boardSquare;
     private Turn currentTurn;
     private Boolean winner=false;
+    private Boolean draw=false;
 
+
+    public Boolean getDraw() {
+        return draw;
+    }
 
     public Game()
     {   
@@ -86,8 +91,9 @@ public class Game {
                      winner=true;
                 }
             }
-            if(!isEmptySq())
+            if(drawMove())
             {
+                draw=true;
                 System.out.println("draw");
             }
     }
@@ -125,7 +131,12 @@ public class Game {
     {
         return winner;
     }
-
+    public Boolean drawMove(){
+        if(!(isEmptySq()) && !getWinner()){
+            return true;
+        }
+        return false;
+    }
     public Boolean winningMove(int row, int col)
         {
             if(abs(row-col)==2 || row==col)// one of the corners + middle

@@ -104,6 +104,11 @@ public class BoardGUI extends javax.swing.JFrame {
                     e1.printStackTrace();
                 }
 
+                if(game.getDraw())
+                {
+                    JOptionPane.showMessageDialog(null, "Draw! ");
+                    setVisible(false);
+                }
                 if(game.getWinner())
                 {
                     JOptionPane.showMessageDialog(null, "We have a winner! ");
@@ -142,8 +147,10 @@ public class BoardGUI extends javax.swing.JFrame {
       
 
     private void updateGUI(Square[][] board) throws IOException {
+       
+    
         for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
+            for (int col = 0; col < 3 ; col++) {
                
                 squares[row][col].removeAll();
                 
@@ -159,11 +166,14 @@ public class BoardGUI extends javax.swing.JFrame {
                     squares[row][col].setBackground(Color.CYAN);
                 }
                 
+                
+                
                 squares[row][col].revalidate();
                 squares[row][col].repaint();
             }
         }
     }
+    
     
 
     //public void play() {
